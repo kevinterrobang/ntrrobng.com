@@ -13,13 +13,16 @@
 
 <template name="temporaryTemplate">
     <div class="jumbotron">
-        <h1>Welcome to <span>ntrrobng</span></h1>
+        <h1>Welcome to ntrrobng</h1>
         <p>This is the website of Kevin Sweeney</p>
         <p>I don't know what I'm going to do with it yet...</p>
         <p><button class="btn btn-primary">Click Me!</button></p>
     </div>
 
   {{#if show}}
-    <div>Nice.</div>
+    <div class="alert alert-success">
+      Congratulations, you win a free plant (emoji).
+      <i class="glyphicon glyphicon-grain"></i>
+    </div>
   {{/if}}
 </template>
