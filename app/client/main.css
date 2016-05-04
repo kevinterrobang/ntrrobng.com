@@ -1,0 +1,7 @@
+/* CSS declarations go here */
+.jumbotron {
+  margin-top: 10px;
+}
+.jumbotron span {
+  text-transform: lowercase;
+}

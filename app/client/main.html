@@ -1,0 +1,25 @@
+<head>
+  <title>The Web Home of Kevin Sweeney (Coming Someday)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kevin Sweeney">
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <div class="container">
+    {{> temporaryTemplate}}
+  </div>
+</body>
+
+<template name="temporaryTemplate">
+    <div class="jumbotron">
+        <h1>Welcome to <span>ntrrobng</span></h1>
+        <p>This is the website of Kevin Sweeney</p>
+        <p>I don't know what I'm going to do with it yet...</p>
+        <p><button class="btn btn-primary">Click Me!</button></p>
+    </div>
+
+  {{#if show}}
+    <div>Nice.</div>
+  {{/if}}
+</template>
