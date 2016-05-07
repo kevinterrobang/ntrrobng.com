@@ -1,17 +1,4 @@
-<head>
-  <title>The Web Home of Kevin Sweeney (Coming Someday)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Kevin Sweeney">
-  <meta charset="utf-8">
-</head>
-
-<body>
-  <div class="container">
-    {{> temporaryTemplate}}
-  </div>
-</body>
-
-<template name="temporaryTemplate">
+<template name="home">
     <div class="jumbotron">
         <h1>Welcome to ntrrobng</h1>
         <p>This is the website of Kevin Sweeney</p>
@@ -22,7 +9,10 @@
   {{#if show}}
     <div class="alert alert-success">
       Congratulations, you win a free plant (emoji).
-      <i class="glyphicon glyphicon-grain"></i>
+      <a href="https://www.youtube.com/watch?v=OxZz-nXTeCs" target="_blank">
+        <i class="glyphicon glyphicon-grain"
+           title="A free plant... for fat slobs... you are so fucking fired it is unbelievable"></i>
+      </a>
     </div>
   {{/if}}
 </template>
