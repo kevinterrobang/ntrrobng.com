@@ -1,0 +1,14 @@
+<template name="birds">
+  <div class="bird-wrapper">
+    {{#if setup}}
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label for="bird-count" class="sr-only">Number of birds</label>
+          <input type="number" class="form-control" id="bird-count" name="birdCount" placeholder="How many birds you want?">
+        </div>
+      </form>
+    {{else}}
+      <div class="sky"></div>
+    {{/if}}
+  </div>
+</template>
