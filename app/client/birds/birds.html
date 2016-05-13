@@ -1,11 +1,22 @@
 <template name="birds">
   <div class="bird-wrapper">
       <form class="form-horizontal {{#unless setup}}hidden{{/unless}}">
+
         <div class="form-group">
+          <p>
+            The beginnings of a project to create a flock of birds using emergent behaviors. Right
+            now it's just a bunch of dots...
+          </p>
           <label for="bird-count" class="sr-only">Number of birds</label>
           <input type="number" class="form-control" id="bird-count" name="birdCount" placeholder="How many birds you want?">
         </div>
       </form>
-      <div id="sky" class="{{#if setup}}hidden{{/if}}"></div>
+      
+      <form class="form-horizontal {{#unless setup}}hidden{{/unless}}">
+        <div class="form-group">
+          <a href="3" class="btn btn-primary" id="home">Go Home</a>
+        </div>
+      </form>
+      <div id="sky" class="hidden"></div>
   </div>
 </template>

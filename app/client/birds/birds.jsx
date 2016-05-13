@@ -6,16 +6,14 @@ Template.birds.onCreated(function () {
 
   instance.settingUp = new ReactiveVar(true)
   instance.destroyBirds = function () {
-
-
     instance.settingUp.set(true)
+    sky.className = "hidden"
   }
 })
 
 Template.birds.events({
   'submit form': function (e, t) {
     e.preventDefault()
-    t.settingUp.set(false)
 
     var count = 0
     var sky = document.getElementById('sky')
@@ -25,38 +23,26 @@ Template.birds.events({
     }
     catch(err) {}
 
-    if (count > 0 && sky) {
-      ReactDOM.render(<Flock count={count} destroy={t.destroyBirds} />, sky)
+    // reset the bird count input value
+    e.currentTarget.elements.birdCount.value = ''
+
+    if (count > 500 && !confirm('More than 500 dots can slow down your shit. Are you sure?')) {
+      return
     }
 
-    e.currentTarget.elements.birdCount.value = ''
+    if (count > 0 && sky) {
+      t.settingUp.set(false)
+      sky.className = ""
+      ReactDOM.render(<Flock count={count} destroy={t.destroyBirds} />, sky)
+    }
+  },
+
+  'click a#home': function (e) {
+    e.preventDefault()
+    FlowRouter.go('home')
   }
 })
 
 Template.birds.helpers({
   setup: () => Template.instance().settingUp.get()
-})
-
-FlockOfBirds = React.createClass({
-
-  propTypes: {
-    count: React.PropTypes.number,
-    destroy: React.PropTypes.func
-  },
-
-  goBack () {
-    this.props.destroy()
-  },
-
-  render () {
-
-    return (
-      <div>
-        <p>Creating a flock of {this.props.count} birds</p>
-        <button id="back-to-bird-setup" className="btn btn-primary" onClick={this.goBack}>
-          Back to Choose
-        </button>
-      </div>
-    )
-  }
 })
