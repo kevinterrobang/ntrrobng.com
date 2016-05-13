@@ -21,3 +21,4 @@ twbs:bootstrap
 less
 blaze
 kadira:blaze-layout
+force-ssl
