@@ -39,7 +39,7 @@ Flock = React.createClass({
     return (
       <div>
         {birds}
-        <button id="back-to-bird-setup" className="btn btn-primary" onClick={this.goBack}>
+        <button id="back-to-bird-setup" className="btn btn-inverted" onClick={this.goBack}>
           Back to Choose
         </button>
       </div>

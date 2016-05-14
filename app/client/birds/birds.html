@@ -1,22 +1,28 @@
 <template name="birds">
   <div class="bird-wrapper">
-      <form class="form-horizontal {{#unless setup}}hidden{{/unless}}">
 
-        <div class="form-group">
+      <div class="{{#unless setup}}hidden{{/unless}}">
+        <div class="form-horizontal">
           <p>
-            The beginnings of a project to create a flock of birds using emergent behaviors. Right
-            now it's just a bunch of dots...
+            The beginnings of a <a href="https://www.meteor.com/" target="_blank">Meteor.js</a>
+            project to mimic a flock of birds using emergent behaviors. Although, right now it's
+            just a bunch of dots jerking about.
           </p>
-          <label for="bird-count" class="sr-only">Number of birds</label>
-          <input type="number" class="form-control" id="bird-count" name="birdCount" placeholder="How many birds you want?">
         </div>
-      </form>
-      
-      <form class="form-horizontal {{#unless setup}}hidden{{/unless}}">
-        <div class="form-group">
-          <a href="3" class="btn btn-primary" id="home">Go Home</a>
-        </div>
-      </form>
+
+        <form class="form-inline">
+
+          <div class="form-group">
+            <label for="bird-count" class="sr-only">Number of birds</label>
+            <input type="number" class="form-control" id="bird-count" name="birdCount" placeholder="How many birds you want?">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Create Flock</button>
+        </form>
+        
+        <a href="3" class="btn btn-inverted" id="home">Go Home</a>
+      </div>
+
       <div id="sky" class="hidden"></div>
   </div>
 </template>

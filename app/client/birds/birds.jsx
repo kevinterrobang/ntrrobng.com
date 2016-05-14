@@ -35,6 +35,9 @@ Template.birds.events({
       sky.className = ""
       ReactDOM.render(<Flock count={count} destroy={t.destroyBirds} />, sky)
     }
+    else {
+      e.currentTarget.elements.birdCount.focus()
+    }
   },
 
   'click a#home': function (e) {
