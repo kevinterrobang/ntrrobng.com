@@ -27,7 +27,7 @@ Template.birds.events({
     // reset the bird count input value
     event.currentTarget.elements.birdCount.value = ''
 
-    if (count > 500 && !confirm('More than 500 dots can slow down your shit. Are you sure?')) {
+    if (count > 500 && !confirm('More than 500 birds can slow down your shit. Are you sure?')) {
       return
     }
 

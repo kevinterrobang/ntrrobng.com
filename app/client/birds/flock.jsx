@@ -37,6 +37,10 @@ Flock = React.createClass({
     this._birds.push(birdComponent)
   },
 
+  getBirds: function () {
+    return this._birds
+  },
+
   goBack () {
     this.props.destroy()
   },
@@ -51,7 +55,10 @@ Flock = React.createClass({
 
     var birds = []
     for (let i = 0; i < this.props.count; i++) {
-      birds.push(<Bird ref={component.addBird} key={i} skyWidth={width} skyHeight={height} />)
+      birds.push(<Bird ref={component.addBird} key={i}
+                       skyWidth={width}
+                       skyHeight={height}
+                       getBirds={this.getBirds} />)
     }
 
     return (
@@ -70,7 +77,7 @@ Bird = React.createClass({
   propTypes: {
     skyWidth: React.PropTypes.number.isRequired,
     skyHeight: React.PropTypes.number.isRequired,
-    getNeighbors: React.PropTypes.func,
+    getBirds: React.PropTypes.func.isRequired,
     x: React.PropTypes.number,
     y: React.PropTypes.number,
     d: React.PropTypes.number,
@@ -88,7 +95,8 @@ Bird = React.createClass({
       stepCount: 0,
       turnArc: 0,
       changeDirSteps: Math.floor(Math.random() * 15) + 6,
-      color: '#fff'
+      color: '#fff',
+      leader: null
     }
   },
 
@@ -102,22 +110,57 @@ Bird = React.createClass({
 
   move() {
 
+    var birds = this.props.getBirds()
     var color = this.state.color
     var turnArc = this.state.turnArc
-    if (this.state.stepCount % this.state.changeDirSteps == 0) {
+    var leader = this.state.leader
+    var newD = this.state.d
+    var newV = this.state.v
+
+    if (!leader) {
+      _.forEach(birds, (bird) => {
+
+        // if this bird is that bird or if that
+        // bird is already following this bird, move along
+        if (this == bird || bird.state.leader == this) {
+          return true // don't compare with itself, true continues loop
+        }
+
+        if (Math.pow(bird.state.x - this.state.x, 2) + Math.pow(bird.state.y - this.state.y, 2) < 225) {
+
+          var dx1 = Math.cos(newD),
+              dy1 = Math.sin(newD),
+              dx2 = Math.cos(bird.state.d),
+              dy2 = Math.sin(bird.state.d)
+
+          if (Math.abs(dx1 - dx2) < 0.2 && Math.abs(dy1 - dy2) < 0.2) {
+            console.log('found a bird going in a similar direction!')
+            leader = bird
+            newD = bird.state.d
+            newV = bird.state.v
+            turnArc = 0
+            //color = '#0ff'
+          }
+
+          return false // we found a close one, stop looping
+        }
+      })
+    }
+    else {
+      newD = leader.state.d
+    }
+
+    if (!leader && this.state.stepCount % this.state.changeDirSteps == 0) {
       if (turnArc == 0) {
         turnArc = (Math.random() - 0.5) * 0.174 // 0.174 is 10 degrees in radians
-        color = '#0f0'
       }
       else {
         turnArc = 0
-        color = '#fff'
       }
     }
 
-    var newD = this.state.d + turnArc
-    var newX = this.state.x + this.state.v * Math.cos(newD)
-    var newY = this.state.y + this.state.v * Math.sin(newD)
+    var newX = this.state.x + newV * Math.cos(newD)
+    var newY = this.state.y + newV * Math.sin(newD)
 
     // make them wrap for now
     if (newX > this.state.skyWidth) {
@@ -136,15 +179,20 @@ Bird = React.createClass({
 
     // alright, set the new state
     this.setState({
-      x: newX, y: newY, d: newD, v: this.state.v,
+      x: newX, y: newY, d: newD + turnArc, v: newV,
       stepCount: ++this.state.stepCount,
       turnArc: turnArc,
-      color: color
+      color: color,
+      leader: leader
     })
   },
 
   render() {
-    return (<div className="bird" style={{left: this.state.x, top: this.state.y, backgroundColor: this.state.color}}></div>)
+    return (
+      <div className="bird"
+           style={{left: this.state.x, top: this.state.y, backgroundColor: this.state.color}}>
+      </div>
+    )
   }
 
 })
