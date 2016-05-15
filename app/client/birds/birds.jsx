@@ -12,36 +12,36 @@ Template.birds.onCreated(function () {
 })
 
 Template.birds.events({
-  'submit form': function (e, t) {
-    e.preventDefault()
+  'submit form': function (event, templateInstance) {
+    event.preventDefault()
 
     var count = 0
     var sky = document.getElementById('sky')
 
     try {
-      count = parseInt(e.currentTarget.elements.birdCount.value)
+      count = parseInt(event.currentTarget.elements.birdCount.value)
     }
     catch(err) {}
 
     // reset the bird count input value
-    e.currentTarget.elements.birdCount.value = ''
+    event.currentTarget.elements.birdCount.value = ''
 
     if (count > 500 && !confirm('More than 500 dots can slow down your shit. Are you sure?')) {
       return
     }
 
     if (count > 0 && sky) {
-      t.settingUp.set(false)
+      templateInstance.settingUp.set(false)
       sky.className = ""
-      ReactDOM.render(<Flock count={count} destroy={t.destroyBirds} />, sky)
+      ReactDOM.render(<Flock count={count} destroy={templateInstance.destroyBirds} />, sky)
     }
     else {
-      e.currentTarget.elements.birdCount.focus()
+      event.currentTarget.elements.birdCount.focus()
     }
   },
 
-  'click a#home': function (e) {
-    e.preventDefault()
+  'click a#home': function (event) {
+    event.preventDefault()
     FlowRouter.go('home')
   }
 })

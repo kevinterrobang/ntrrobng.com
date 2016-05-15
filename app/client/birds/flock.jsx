@@ -7,20 +7,39 @@ Flock = React.createClass({
     destroy: React.PropTypes.func.isRequired
   },
 
-  goBack () {
-    this.props.destroy()
+  handleResize: function () {
+
+    var sky = document.getElementById('sky')
+    var width = sky.offsetWidth
+    var height = sky.offsetHeight
+
+    _.forEach(this._birds, (birdComponent) => {
+      console.log('setting bird state')
+      birdComponent.setState({
+        skyWidth: width,
+        skyHeight: height
+      })
+    })
   },
 
-  getInitialState () {
-    var birds = []
-    for (let i = 0; i < this.props.count; i++) {
-      birds.push(new Bird(Math.floor(Math.random() * 100),
-                          Math.floor(Math.random() * 100),
-                          Math.random() * Math.PI * 2,
-                          Math.random() * 5))
+  componentDidMount: function () {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  componentWillUnmount: function () {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  addBird: function (birdComponent) {
+    if (!this._birds) {
+      this._birds = []
     }
 
-    return {birds: birds}
+    this._birds.push(birdComponent)
+  },
+
+  goBack () {
+    this.props.destroy()
   },
 
   render () {
@@ -33,7 +52,7 @@ Flock = React.createClass({
 
     var birds = []
     for (let i = 0; i < this.props.count; i++) {
-      birds.push(<Bird key={i} skyWidth={width} skyHeight={height} />)
+      birds.push(<Bird ref={component.addBird} key={i} skyWidth={width} skyHeight={height} />)
     }
 
     return (
@@ -65,9 +84,12 @@ Bird = React.createClass({
       y: this.props.y || Math.random() * this.props.skyHeight,
       d: this.props.d || Math.random() * Math.PI * 2,
       v: this.props.v || Math.random() * 2 + 5,
+      skyWidth: this.props.skyWidth,
+      skyHeight: this.props.skyHeight,
       stepCount: 0,
       turnArc: 0,
-      changeDirSteps: Math.floor(Math.random() * 15) + 6
+      changeDirSteps: Math.floor(Math.random() * 15) + 6,
+      color: '#fff'
     }
   },
 
@@ -81,13 +103,16 @@ Bird = React.createClass({
 
   move() {
 
+    var color = this.state.color
     var turnArc = this.state.turnArc
     if (this.state.stepCount % this.state.changeDirSteps == 0) {
       if (turnArc == 0) {
         turnArc = (Math.random() - 0.5) * 0.174 // 0.174 is 10 degrees in radians
+        color = '#0f0'
       }
       else {
         turnArc = 0
+        color = '#fff'
       }
     }
 
@@ -96,26 +121,31 @@ Bird = React.createClass({
     var newY = this.state.y + this.state.v * Math.sin(newD)
 
     // make them wrap for now
-    if (newX > this.props.skyWidth) {
-      newX -= this.props.skyWidth
+    if (newX > this.state.skyWidth) {
+      newX -= this.state.skyWidth
     }
     else if (newX < 0) {
-      newX += this.props.skyWidth
+      newX += this.state.skyWidth
     }
 
-    if (newY > this.props.skyHeight) {
-      newY -= this.props.skyHeight
+    if (newY > this.state.skyHeight) {
+      newY -= this.state.skyHeight
     }
     else if (newY < 0) {
-      newY += this.props.skyHeight
+      newY += this.state.skyHeight
     }
 
     // alright, set the new state
-    this.setState({x: newX, y: newY, d: newD, v: this.state.v, stepCount: ++this.state.stepCount, turnArc: turnArc})
+    this.setState({
+      x: newX, y: newY, d: newD, v: this.state.v,
+      stepCount: ++this.state.stepCount,
+      turnArc: turnArc,
+      color: color
+    })
   },
 
   render() {
-    return (<div className="bird" style={{left: this.state.x, top: this.state.y}}></div>)
+    return (<div className="bird" style={{left: this.state.x, top: this.state.y, backgroundColor: this.state.color}}></div>)
   }
 
 })
