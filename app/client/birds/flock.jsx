@@ -14,7 +14,6 @@ Flock = React.createClass({
     var height = sky.offsetHeight
 
     _.forEach(this._birds, (birdComponent) => {
-      console.log('setting bird state')
       birdComponent.setState({
         skyWidth: width,
         skyHeight: height

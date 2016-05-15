@@ -8,6 +8,7 @@ Template.birds.onCreated(function () {
   instance.destroyBirds = function () {
     instance.settingUp.set(true)
     sky.className = "hidden"
+    ReactDOM.unmountComponentAtNode(document.getElementById('sky'));
   }
 })
 
