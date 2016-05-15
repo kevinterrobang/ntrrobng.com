@@ -64,7 +64,10 @@ Bird = React.createClass({
       x: this.props.x || Math.random() * this.props.skyWidth,
       y: this.props.y || Math.random() * this.props.skyHeight,
       d: this.props.d || Math.random() * Math.PI * 2,
-      v: this.props.v || Math.random() * 10
+      v: this.props.v || Math.random() * 2 + 5,
+      stepCount: 0,
+      turnArc: 0,
+      changeDirSteps: Math.floor(Math.random() * 15) + 6
     }
   },
 
@@ -78,18 +81,19 @@ Bird = React.createClass({
 
   move() {
 
-    var newD = this.state.d
-    if (Math.random() < 0.25) {
-      newD = Math.random() * Math.PI * 2
+    var turnArc = this.state.turnArc
+    if (this.state.stepCount % this.state.changeDirSteps == 0) {
+      if (turnArc == 0) {
+        turnArc = (Math.random() - 0.5) * 0.174 // 0.174 is 10 degrees in radians
+      }
+      else {
+        turnArc = 0
+      }
     }
 
-    var newV = this.state.v
-    if (Math.random() < 0.25) {
-      newV = Math.random() * 10
-    }
-
-    var newX = this.state.x + newV * Math.cos(newD)
-    var newY = this.state.y + newV * Math.sin(newD)
+    var newD = this.state.d + turnArc
+    var newX = this.state.x + this.state.v * Math.cos(newD)
+    var newY = this.state.y + this.state.v * Math.sin(newD)
 
     // make them wrap for now
     if (newX > this.props.skyWidth) {
@@ -107,7 +111,7 @@ Bird = React.createClass({
     }
 
     // alright, set the new state
-    this.setState({x: newX, y: newY, d: newD, v: newV})
+    this.setState({x: newX, y: newY, d: newD, v: this.state.v, stepCount: ++this.state.stepCount, turnArc: turnArc})
   },
 
   render() {
